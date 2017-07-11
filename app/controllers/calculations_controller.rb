@@ -17,7 +17,17 @@ class CalculationsController < ApplicationController
 
     @character_count_without_spaces = @text.gsub(/\s+/, "").length
 
-    @occurrences = "Replace this string with your answer."
+    @separated_words = @text.split
+    @occurrences = []
+    @separated_words.each do |word| 
+      if @special_word.in?(word)
+      @occurrences.push(1)
+      end
+    end
+      
+    @occurrences = @occurrences.sum
+      
+    
 
     # ================================================================================
     # Your code goes above.
@@ -60,12 +70,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))
+    @minutes = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))./(60)
+    @hours = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))./(60)./(60)
+    @days = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))./(60)./(60)./(24)
+    @weeks = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))./(60)./(60)./(24)./(7)
+    @years = Chronic.parse(params[:ending_time]).-(Chronic.parse(params[:starting_time]))./(60)./(60)./(24)./(7)./(52)
 
     # ================================================================================
     # Your code goes above.

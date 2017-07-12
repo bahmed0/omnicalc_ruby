@@ -47,8 +47,15 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
-
-    @monthly_payment = "Replace this string with your answer."
+    
+    rate_as_decimal_permonth= @apr./(100)./(12).to_f
+    number_payments=@years.*(12)
+    one_plus_monthly_rate=1.+(rate_as_decimal_permonth).to_f
+    discount_factor_numerator=one_plus_monthly_rate.**(number_payments).-(1)
+    discount_factor_denominator1=(one_plus_monthly_rate).**number_payments
+    discount_factor_denominator=discount_factor_denominator1.*(rate_as_decimal_permonth)
+    discount_factor=discount_factor_numerator./(discount_factor_denominator)
+    @monthly_payment = @principal./(discount_factor)
 
     # ================================================================================
     # Your code goes above.
@@ -92,27 +99,40 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+  n=@numbers  
+  
+    @sorted_numbers = n.sort
 
-    @count = "Replace this string with your answer."
+    @count = n.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = n.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = n.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum.-(@minimum)
+    
+    if
+      @count.odd?
+      @median = @sorted_numbers[(@count-1)/2]
+    else
+      @median = (@sorted_numbers[(@count-1)/2] + @sorted_numbers[(@count)/2])/2
+    end
 
-    @median = "Replace this string with your answer."
+    @sum = n.sum
 
-    @sum = "Replace this string with your answer."
+    @mean = @sum.to_f./(@count).to_f
+    
+    number_subtract_mean = []
+    @numbers.each do |num|
+      difference = (num - @mean)**2
+      number_subtract_mean.push(difference)
+    
+    @variance = number_subtract_mean.sum./(@count)
+  end
 
-    @mean = "Replace this string with your answer."
+    @standard_deviation = @variance.**(0.5)
 
-    @variance = "Replace this string with your answer."
-
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    @mode = n.uniq.max_by{ |i| @numbers.count( i )}
 
     # ================================================================================
     # Your code goes above.
